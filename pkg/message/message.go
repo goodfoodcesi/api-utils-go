@@ -6,16 +6,16 @@ import (
 	"time"
 )
 
-type Message[T any] struct {
+type Message struct {
 	ID        string    `json:"id"`
 	Type      string    `json:"type"`
 	Timestamp time.Time `json:"timestamp"`
 	Producer  string    `json:"producer"`
-	Payload   T         `json:"payload"`
+	Payload   any       `json:"payload"`
 }
 
-func NewMessage[T any](msgType string, producer string, payload any) *Message[T] {
-	return &Message[T]{
+func NewMessage[T any](msgType string, producer string, payload any) *Message {
+	return &Message{
 		ID:        uuid.NewString(),
 		Type:      msgType,
 		Timestamp: time.Now(),
@@ -24,12 +24,12 @@ func NewMessage[T any](msgType string, producer string, payload any) *Message[T]
 	}
 }
 
-func (m *Message[T]) Marshal() ([]byte, error) {
+func (m *Message) Marshal() ([]byte, error) {
 	return json.Marshal(m)
 }
 
-func UnmarshalMessage[T any](data []byte) (*Message[T], error) {
-	var msg Message[T]
+func UnmarshalMessage(data []byte) (*Message, error) {
+	var msg Message
 	err := json.Unmarshal(data, &msg)
 	return &msg, err
 }
