@@ -2,6 +2,7 @@ package message
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/google/uuid"
 	"time"
 )
@@ -32,4 +33,17 @@ func UnmarshalMessage(data []byte) (*Message, error) {
 	var msg Message
 	err := json.Unmarshal(data, &msg)
 	return &msg, err
+}
+
+func (m *Message) ExtractPayloadEntity(target any) error {
+	payloadBytes, err := json.Marshal(m.Payload)
+	if err != nil {
+		return fmt.Errorf("failed to marshal payload: %w", err)
+	}
+
+	err = json.Unmarshal(payloadBytes, target)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal payload into target: %w", err)
+	}
+	return nil
 }
