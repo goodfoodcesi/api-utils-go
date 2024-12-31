@@ -14,7 +14,7 @@ type Message struct {
 	Payload   any       `json:"payload"`
 }
 
-func NewMessage[T any](msgType string, producer string, payload any) *Message {
+func NewMessage(msgType string, producer string, payload any) *Message {
 	return &Message{
 		ID:        uuid.NewString(),
 		Type:      msgType,
