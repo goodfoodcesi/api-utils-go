@@ -23,10 +23,10 @@ func NewOrder(orderID, customerID, shopID, DriverID string) *Order {
 	}
 }
 
-func (o *Order) MarshalJSON() ([]byte, error) {
+func (o *Order) MarshalOrderJSON() ([]byte, error) {
 	return json.Marshal(o)
 }
 
-func (o *Order) UnmarshalJSON(data []byte) error {
+func (o *Order) UnmarshalOrderJSON(data []byte) error {
 	return json.Unmarshal(data, o)
 }
