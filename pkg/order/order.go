@@ -1,6 +1,6 @@
 package order
 
-import "github.com/google/uuid"
+import "encoding/json"
 
 const (
 	Type         = "Order"
@@ -8,19 +8,25 @@ const (
 )
 
 type Order struct {
-	ID         string `json:"id"`
 	OrderID    string `json:"order_id"`
 	CustomerID string `json:"customer_id"`
 	ShopID     string `json:"shop_id"`
-	DeliveryID string `json:"delivery_id"`
+	DriverID   string `json:"driver_id"`
 }
 
-func NewOrder(orderID, customerID, shopID, deliveryID string) *Order {
+func NewOrder(orderID, customerID, shopID, DriverID string) *Order {
 	return &Order{
-		ID:         uuid.NewString(),
 		OrderID:    orderID,
 		CustomerID: customerID,
 		ShopID:     shopID,
-		DeliveryID: deliveryID,
+		DriverID:   DriverID,
 	}
+}
+
+func (o *Order) MarshalJSON() ([]byte, error) {
+	return json.Marshal(o)
+}
+
+func (o *Order) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, o)
 }
